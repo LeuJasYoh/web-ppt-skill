@@ -91,6 +91,10 @@ references 里的布局骨架和类名已与脚手架的 CSS、动效引擎逐�
 
 三处标识是定死的：品牌叫 VuePPT，skill 注册名是 `vue-ppt`（SKILL.md frontmatter），npm 包和 Go 模块都叫 `vueppt`。改的时候三处一起动。
 
-## 致谢
+## 致谢与来源
 
-视觉系统（双风格 CSS、版式语言、动效 recipe、主题色）来自 [guizang-ppt-skill](https://github.com/Obnine/guizang-ppt-skill)；主题词表与"生成→校验→截图→人眼验收"的闭环方法论来自 style-generate-skill；文案规则来自 lieflat-less-ai-tone 的 629 篇对照研究。各自都做了适配或重写，问题归本项目。
+站在三个项目的肩膀上，各自做了适配或重写，问题归本项目：
+
+- [guizang-ppt-skill](https://github.com/Obnine/guizang-ppt-skill)（AGPL-3.0）——视觉系统的衍生母体：双风格 CSS、版式语言、动效 recipe、主题色都移植自它。因母体协议所系，本仓库不设再授权协议，分发时请连同本致谢一并保留
+- style-generate-skill——主题分类词表（category / styleCase 封闭集）与"生成→校验→截图→人眼验收"闭环的方法论来源
+- lieflat-less-ai-tone——文案规则的依据，其 629 篇文章、282.7 万字的去 AI 味对照研究（作者公开了全部测量方法）
