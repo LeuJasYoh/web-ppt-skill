@@ -1,7 +1,7 @@
 <!-- Vue 版适配说明：
 1. 所有 grep/自检的目标都是 src/slides/*.vue（每页一个组件），不是单文件 index.html。
 2. 动效由 npm 包 motion 驱动（src/composables/），字体由 @fontsource npm 包内嵌，图标由 npm 包 lucide 渲染——全部离线可用，不存在 CDN 校验项。
-3. 本 skill 未移植演讲者模式与校验脚本：演讲者模式（P 键/SPEAKER_NOTES/观众屏）与 validate-*.mjs 均不存在，自检一律用本文的 grep + 浏览器目测。
+3. 演讲者模式（P 键/SPEAKER_NOTES/观众屏）未移植。但本 skill 已带机检：交付前必跑 `node <skill目录>/scripts/verify/check-deck.mjs <deck目录>`（版式锁/主题节奏/占位符）与 `scripts/themes/validate.mjs --deck`（主题登记表）——本文的 grep 自检用于生成过程中的快速自查。
 -->
 
 # 质量检查清单（Checklist）
@@ -13,6 +13,22 @@
 ---
 
 ## 🔴 P0 · 一定不能犯的错
+
+### 0-W. 文案去 AI 味（规则全文见 copywriting.md）
+
+**现象**:视觉是杂志感,标题一读就是 AI——「不是 X 而是 Y」「一句话总结：」「这意味着…」。
+
+**根因**:只审了版式没审文字;模型默认输出自带这些句式。
+
+**做法**(生成时约束,每写一句直接遵守):
+- 禁翻案腔/空转冒号句/提示语起手式;标题直接给判断
+- 禁拟人化职业喻体;翻译腔 5 种全拆
+- 信息守恒:用户数字原样上屏,「可能提升 12%」不得写成「提升 12%」
+
+**生成后自检**(目标 src/slides/):
+```bash
+grep -rn "不是.*而是\|这意味着\|对于.*来说\|一句话总结\|说白了\|先说结论\|像一位" src/slides/*.vue
+```
 
 ### 0-S. Swiss locked mode:正文页必须来自原始 22P
 
@@ -151,7 +167,7 @@ grep -rn 'text-anchor' src/slides/*.vue          # SVG 文字只允许 S14/S17 �
 
 **现象**:一页只超出 20-30px,修的时候删掉大块内容,结果下方多出一大片空白。
 
-**做法**(本 skill 无渲染测量脚本,用浏览器 DevTools 代替):
+**做法**(像素实测已机检化:check-deck --render,找不到 playwright 时才用浏览器 DevTools 手测):
 - `npm run dev` 打开该页,DevTools 选中最低的元素,看它是否越过约 93vh 安全线、底部空白多大
 - **Overflow 修正阶梯**:
   - `1-40px` over:只做微调,上移内容组或收紧一个 gap;不要删内容
@@ -353,7 +369,7 @@ Hero Cover → Act Divider (hero) → 3-4 pages non-hero → Act Divider (hero)
 
 **dark hero**：遮罩 12-15%（WebGL 明显透出）
 **light hero**：遮罩 16-20%（WebGL 隐约可见，不抢字）
-**普通 light/dark 页**：遮罩 92-95%（几乎不透）
+**普通 light/dark 页**：遮罩约 78%（几乎不透）
 
 如果页面文字非常少（hero question），遮罩可以再薄些；如果正文密集，必须加厚遮罩确保可读。
 
@@ -423,7 +439,7 @@ Dark hero 可以用 Holographic Dispersion（钛金色散）等带中心结构�
 
 ### 17. 翻页导航要保留
 
-脚手架默认支持：← → ↑ ↓ / Space / PgUp PgDn / Home End / 滚轮 / 触屏滑动 / 底部圆点 / `ESC` 总览 / `B` 静态模式 / `?slide=N` 直达。不要删 App.vue 里的导航逻辑。
+脚手架默认支持：← → ↑ ↓ / Space / PgUp PgDn / Home End / 滚轮 / 触屏滑动 / 底部圆点 / `ESC` 总览 / `?slide=N` 直达。不要删 App.vue 里的导航逻辑。成品页面内不显示操作提示。
 
 ### 18. 不要用 `height:100vh` 硬设，用 `min-height:80vh`
 
@@ -442,6 +458,7 @@ Dark hero 可以用 Holographic Dispersion（钛金色散）等带中心结构�
   □ 杂志风:已画"主题节奏表",满足无连续 3 页同主题 / ≥1 hero dark + ≥1 hero light
   □ 瑞士风:每页已列 `页码 → data-layout → 为什么选它 → 图片槽位`
   □ `<title>` 已改为实际 deck 标题(grep "[必填]" 应无结果)
+  □ 文案自检 grep 零命中(copywriting.md 0-W 区块),用户数字原样上屏
   □ 瑞士风:封面是 `slide accent` 满屏 IKB + `<AsciiField />`(不是白底)
   □ 瑞士风:封底是 `slide split` + 左 `b-accent` + AsciiField / 右 `.takeaway-list`,第 03 条用 var(--accent)
   □ 瑞士风:封面没有"01"等大编号(chrome-min 已显示 01/N)
@@ -469,7 +486,6 @@ Dark hero 可以用 Holographic Dispersion（钛金色散）等带中心结构�
   □ 底部圆点数量与总页数匹配,点圆点可跳页
   □ chrome 里的页码和实际页号一致
   □ ESC 总览宫格正常(点缩略图跳页,缩略图内容完整可见)
-  □ B 键低功耗模式切换,右下角提示在 `B 动态` / `B 静态` 之间切换
   □ URL 加 ?slide=N 直达第 N 页
 
 动效
@@ -477,7 +493,7 @@ Dark hero 可以用 Holographic Dispersion（钛金色散）等带中心结构�
   □ 杂志风:大引用 quote / 对比 directional / pipeline 分步,挂点齐全
   □ 瑞士风:每页 recipe 命中契约表(挂点类抄自登记骨架)
   □ 杂志风 `grep -c 'data-anim' src/slides/*.vue` 每页 ≥ 3
-  □ 低功耗模式下内容仍全部可见,无控制台报错
+  □ 系统"减少动态效果"时自动静态降级,内容仍全部可见,无控制台报错
 ```
 
 全勾完，才是合格的 PPT。

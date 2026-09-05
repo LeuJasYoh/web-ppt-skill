@@ -45,7 +45,7 @@ func main() {
 		log.Fatal(err)
 	}
 	url := fmt.Sprintf("http://%s", ln.Addr().String())
-	fmt.Printf("Web PPT 已就绪: %s  （关闭此窗口即退出）\n", url)
+	fmt.Printf("VuePPT 已就绪: %s  （关闭此窗口即退出）\n", url)
 
 	if !*noBrowser {
 		go func() {

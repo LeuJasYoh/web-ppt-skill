@@ -1,6 +1,6 @@
 @echo off
 setlocal
-rem ===== Web PPT 一键构建（Windows）=====
+rem ===== VuePPT 一键构建（Windows）=====
 if not exist node_modules call npm install
 if errorlevel 1 goto :err
 call npm run build

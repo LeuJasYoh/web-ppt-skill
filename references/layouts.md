@@ -3,7 +3,7 @@
    class / data-anim / data-animate 原样保留（动效引擎查询真实 DOM，与框架无关）。
 2. 图片放 public/images/（命名 {页号}-{语义}.{ext}），骨架里 src="images/01-cover.jpg" 原样可用。
 3. 每页组件在 src/slides/index.js 按顺序注册。
-4. 文中提到的演讲者模式与校验脚本未随本 skill 移植（本 skill 无此能力），自检参考 checklist.md 的 grep + 目测方式。
+4. 演讲者模式未移植；校验已机检化（scripts/verify/check-deck.mjs，版式合规/主题节奏/占位符），本文 grep 用于生成过程自查。
 -->
 
 # 页面布局库（Layouts）
@@ -66,7 +66,7 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
 
 ### D. 主题色与主题节奏
 
-- 主题色从 `references/themes.md` 的 5 套预设里选一套,不允许自定义 hex 值
+- 主题色从登记表（scripts/themes/themes.csv 的 mag-* 行，gen.mjs --list 查看）选一套,不允许自定义 hex 值
 - 主题节奏(每页用 light / dark / hero light / hero dark 哪一个)在下文"主题节奏规划"一节有硬规则,生成前必读
 - 两件事都要在挑布局之前决定,避免返工
 
@@ -84,7 +84,7 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
 | `directional` | 左进 → 分割 → 右进,用于对比 | Layout 9 Before/After |
 | `pipeline` | 手动推进,按 →/空格 一步步点亮 | Layout 6 流水线 |
 
-**降级保底**:动效库在构建期打包,无 CDN 依赖;按 `B` 切到低功耗模式时,所有 `data-anim` 元素强制可见,内容永远可读。
+**降级保底**:动效库在构建期打包,无 CDN 依赖;系统减少动态效果(prefers-reduced-motion)时自动进入低功耗模式,所有 `data-anim` 元素强制可见,内容永远可读。
 
 **不需要动效的页面**:如果某页想完全跳过动效,不加任何 `data-anim` 即可 —— Motion One 只对带标记的元素生效。
 
@@ -468,7 +468,7 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
 
 **要点**：
 - 用 `.pipeline-section` 分组 + `.pipeline-label` 作组标题
-- 两组之间用 3.6vh 的间距 + 顶部细分隔线（已在 CSS 中预设）
+- 两组之间用 4.4vh 的间距 + 顶部细分隔线（已在 CSS 中预设）
 - 每个 step 是固定的 nb → title → desc 结构
 - 步骤数不限但单行最好 ≤5 个，否则换到第二 pipeline
 - **动效**:`<section>` 加 `data-animate="pipeline"`,每个 `.step` 加 `data-anim="step"`。翻到此页时步骤默认 `opacity:.15`,按 →/空格/滚轮下滑时一次点亮一个 step;**所有 step 点亮完才会翻到下一页**,可制造演讲互动感
@@ -674,4 +674,4 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
 7. ... 第二幕、第三幕同样节奏 ...
 8. **Hero Close**（最后一页，问题或致谢）
 
-hero 页与 non-hero 页应该 **2-3 : 1 比例交错**，不要连续超过 3 页 non-hero，也不要连续超过 2 页 hero。
+non-hero 页与 hero 页保持约 **3 : 1** 的比例交错（每 3-4 页一个 hero），不要连续超过 2 页 non-hero 后长时间无呼吸，也不要连续超过 2 页 hero。

@@ -4,7 +4,7 @@
 2. 图片放 public/images/（命名 {页号}-{语义}.{ext}），骨架里 src="images/01-cover.jpg" 原样可用。
 3. 每页组件在 src/slides/index.js 按顺序注册；用到 ASCII 呼吸场的页在 <script setup> 里
    import AsciiField from '../components/AsciiField.vue'（仅 S01 / S10）。
-4. 本 skill 未移植演讲者模式与校验脚本，自检一律用文中的 grep/目测方式。
+4. 演讲者模式未移植；校验已机检化（scripts/verify/check-deck.mjs 拦截未登记版式/居中标题/SVG 文字），文中 grep 用于生成过程自查。
 -->
 
 # Layouts · 风格 B 瑞士国际主义
@@ -45,7 +45,7 @@ grep -o 'data-layout="S[0-9]*"' src/slides/*.vue  # 逐页核对 Sxx 与实际�
 **配色**(`--accent` 由主题决定,见 `themes-swiss.md`)
 - `--paper` 纸白底 #fafaf8(主背景,canvas-mode 下卡片即页面)
 - `--ink` 黑墨字 #0a0a0a(主文字 / Ink 反转块)
-- `--accent` 单色锚点(IKB 蓝默认 / 黄 / 绿 / 橙 四套)
+- `--accent` 单色锚点(sw-* 5 套：IKB 蓝 / 柠檬黄 / 柠檬绿 / 安全橙 / 信任蓝)
 - `--text-primary / secondary / helper` 三级文字灰阶
 - `--border-subtle` 1px 发丝细线 #e0e0e0
 
@@ -102,7 +102,7 @@ grep -o 'data-layout="S[0-9]*"' src/slides/*.vue  # 逐页核对 Sxx 与实际�
 
 **画布**
 - 默认 canvas mode(见 `src/style.js` 的 `canvasMode:true`):无 WebGL,`.canvas-card` 即页面,`padding:5.6vh 5vw 4.4vh`
-- 必须保留右下角 `B 静态` 快捷键。低功耗模式使用 `body.low-power`,停止 ASCII canvas RAF 与 Motion 入场动画,刷新后通过 `localStorage` 保持用户选择
+- 封底不包含任何快捷键提示（成品页面内不显示操作提示）。低功耗模式使用 `body.low-power`,随系统 prefers-reduced-motion 自动启用,停止 ASCII canvas RAF 与 Motion 入场动画
 - 如需 WebGL 极细网格背景(鼠标附近偷渡一抹 accent),把 `src/style.js` 里 swiss 的 `canvasMode` 改为 `false`——默认不要动
 
 ---

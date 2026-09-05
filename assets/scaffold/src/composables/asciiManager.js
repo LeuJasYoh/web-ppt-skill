@@ -2,7 +2,7 @@
 // sin/cos 二维噪声场驱动字符显隐，工业仪表板"涌动呼吸"质感。
 // 用法：在 .canvas-card（或 split .half.b-accent）内首位插入 <AsciiField />。
 // 单一 RAF 管理所有画布，离屏 slide 降帧渲染。
-import { lowPower, LOW_POWER_EVENT } from './useLowPower'
+import { lowPower } from './useLowPower'
 
 const PALETTE = '   ...:::---+++***◦◦••▢▣'
 const CELL = 16
@@ -90,7 +90,6 @@ function stop() {
   canvases.forEach(c => { if (c.__ctx) c.__ctx.clearRect(0, 0, c.__w || 0, c.__h || 0) })
 }
 
-addEventListener(LOW_POWER_EVENT, e => { e.detail.on ? stop() : start() })
 addEventListener('resize', () => {
   if (lowPower.value) return
   if (pending) cancelAnimationFrame(pending)

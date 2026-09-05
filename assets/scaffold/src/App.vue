@@ -1,13 +1,13 @@
 <script setup>
 // Deck 主控：横向条带翻页（所有页常驻 DOM，与原模板机制一致）。
-// 键盘 ← → ↑ ↓ / Space / PgUp PgDn / Home End / ESC 总览 / B 低功耗
+// 键盘 ← → ↑ ↓ / Space / PgUp PgDn / Home End / ESC 总览
 // 滚轮、触屏滑动、底部圆点、?slide=N 直达（1-based）
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { createIcons } from 'lucide'
 import * as lucideIcons from 'lucide'   // ESM 需显式传入图标集（全量引入，离线可用）
 import slides from './slides'
 import { styleConfig as cfg } from './style'
-import { lowPower, lowPowerLabel, initLowPower, setLowPower } from './composables/useLowPower'
+import { initLowPower } from './composables/useLowPower'
 import { playSlide, pipeAdvance } from './composables/useDeckMotion'
 import DeckBackground from './components/DeckBackground.vue'
 
@@ -81,18 +81,9 @@ function toggleOverview() {
   else { ovEl.value.style.display = 'none' }
 }
 
-function toggleLowPower() {
-  setLowPower(!lowPower.value)
-  // 切回动态模式时重播当前页；切静态时 playSlide 内部会 revealStatic
-  playSlide(idx.value, currentSlideEl())
-}
-
 /* =============== 输入：键盘 / 滚轮 / 触屏 =============== */
 function onKey(e) {
   if (e.key === 'Escape') { e.preventDefault(); toggleOverview(); return }
-  if (e.key && e.key.toLowerCase() === 'b' && !e.metaKey && !e.ctrlKey && !e.altKey) {
-    e.preventDefault(); toggleLowPower(); return
-  }
   if (overviewOn.value) return
   if (['ArrowRight', 'PageDown', ' ', 'ArrowDown'].includes(e.key)) { e.preventDefault(); next(); return }
   if (['ArrowLeft', 'PageUp', 'ArrowUp'].includes(e.key)) { e.preventDefault(); prev() }
@@ -166,11 +157,6 @@ onUnmounted(() => {
     ></button>
   </div>
 
-  <div id="hint" role="toolbar" aria-label="快捷控制">
-    <span>← → 翻页</span><span class="ppt-sep">·</span>
-    <button type="button" @click="toggleLowPower"><span class="ppt-key">B</span>{{ lowPowerLabel }}</button><span class="ppt-sep">·</span>
-    <button type="button" @click="toggleOverview"><span class="ppt-key">ESC</span>总览</button>
-  </div>
 
   <div id="overview" ref="ovEl"></div>
 </template>

@@ -1,0 +1,13 @@
+slug,label,desc,category,styleCase,style,ink,paper,paper_tint,ink_tint,grey_1,grey_2,grey_3,accent,accent_on,accent_bright
+mag-ink,墨水经典,纯墨黑+暖米白+印张红细节,杂志 · 编辑,商业汇报、品牌营销、杂志编辑,magazine,#0a0a0b,#f1efea,#e8e5de,#18181a,,,,,,
+mag-indigo,靛蓝瓷,深靛蓝+瓷白，冷静理性有深度,浅色 · 专业,技术分享、学术研究、商业汇报,magazine,#0a1f3d,#f1f3f5,#e4e8ec,#152a4a,,,,,,
+mag-forest,森林墨,深森林绿+象牙，沉稳有呼吸感,自然 · 有机,品牌营销、生活方式、旅游出行,magazine,#1a2e1f,#f5f1e8,#ece7da,#253d2c,,,,,,
+mag-kraft,牛皮纸,深棕+暖米，怀旧手作感,浅色 · 柔和,杂志编辑、生活方式、亲子儿童,magazine,#2a1e13,#eedfc7,#e0d0b6,#3a2a1d,,,,,,
+mag-dune,沙丘,炭灰+沙色，克制高级的中性调,浅色 · 极简,商业汇报、杂志编辑、艺术视觉,magazine,#1f1a14,#f0e6d2,#e3d7bf,#2d2620,,,,,,
+sw-ikb,克莱因蓝,纯白底+IKB 蓝单锚点，极致冷静,浅色 · 极简,技术分享、商业汇报、融资路演,swiss,#0a0a0a,#fafaf8,,,#f0f0ee,#d4d4d2,#737373,#002FA7,#ffffff,#5B7BFF
+sw-lemon,柠檬黄,米白底+镉柠檬黄，鲜亮活力,活力 · 创意,品牌营销、产品发布、时尚潮流,swiss,#0a0a0a,#fafaf8,,,#f0f0ee,#d4d4d2,#737373,#FFD500,#0a0a0a,#FFE666
+sw-lime,柠檬绿,米白底+荧光柠檬绿，未来感,活力 · 创意,技术分享、产品发布、品牌营销,swiss,#0a0a0a,#fafaf8,,,#f0f0ee,#d4d4d2,#737373,#C5E803,#0a0a0a,#DCF168
+sw-orange,安全橙,米白底+安全橙，工业锚点感,大胆 · 宣言,商业汇报、产品发布、年度庆典,swiss,#0a0a0a,#fafaf8,,,#f0f0ee,#d4d4d2,#737373,#FF6B35,#0a0a0a,#FFA686
+sw-saas,信任蓝,信任蓝+珊瑚橙对比的 SaaS 质感,浅色 · 专业,商业汇报、融资路演、技术分享,swiss,#1E293B,#F8FAFC,,,#EEF2F7,#E2E8F0,#64748B,#2563EB,#ffffff,#7CA1F3
+mag-snow,象牙雪,象牙纸白近单色，学术与作品集,浅色 · 极简,学术研究、杂志编辑、艺术视觉,magazine,#14120f,#faf8f4,#efeadf,#26221c,,,,,,
+mag-sage,鼠尾草,灰绿鼠尾草，安静的自然感,自然 · 有机,教学科普、生活方式、旅游出行,magazine,#26332a,#f2f4ef,#e4e9e0,#3a4a3e,,,,,,

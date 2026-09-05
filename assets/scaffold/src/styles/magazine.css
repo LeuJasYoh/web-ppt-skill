@@ -14,16 +14,16 @@
 @import '@fontsource/ibm-plex-mono/600.css';
 
 :root{
-  /* ============ 主题色(默认:🖋 墨水经典) ============
-     切换主题:从 references/themes.md 复制对应的值
-     整体替换这几行(--ink / --ink-rgb / --paper / --paper-rgb / --paper-tint / --ink-tint)
-     其他地方散落的 rgba() 都走 var(--ink-rgb) / var(--paper-rgb),无需逐处改 */
+/* THEME:BEGIN mag-ink */
   --ink:#0a0a0b;
   --ink-rgb:10,10,11;
   --paper:#f1efea;
   --paper-rgb:241,239,234;
   --paper-tint:#e8e5de;
   --ink-tint:#18181a;
+/* THEME:END */
+  /* ============ 主题色（本段由 scripts/themes/gen.mjs 从 themes.csv 生成，勿手改） ============
+     切换主题: node <skill目录>/scripts/themes/gen.mjs --apply <slug> --deck <deck目录>（清单: --list） */
 
   /* ============ 字体(跨主题固定,自托管可离线) ============ */
   --mono:"IBM Plex Mono",ui-monospace,monospace;
@@ -31,7 +31,15 @@
   --serif-body-en:"Source Serif 4 Variable","Source Serif 4",Georgia,serif;
   --serif-zh:"Noto Serif SC Variable","Noto Serif SC",source-han-serif-sc,serif;
   --sans-zh:"Noto Sans SC Variable","Noto Sans SC",source-han-sans-sc,sans-serif;
+
+  /* ============ 动效缓动(recipesMagazine 从这里读,CSS 唯一事实源) ============ */
+  --ease-editorial:cubic-bezier(.22,1,.36,1);
+
+  /* ============ 底部安全区(与 swiss.css 同名同值,导航圆点避让) ============ */
+  --nav-safe-bottom:8vh;
 }
+.nav-safe-bottom{padding-bottom:var(--nav-safe-bottom)}
+.nav-safe-bottom-tight{padding-bottom:calc(var(--nav-safe-bottom) * .65)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);color:var(--paper);font-family:var(--sans-zh);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 
@@ -199,13 +207,6 @@ figure.tile > .frame-img{flex:0 0 auto}
 body.light-bg #nav{background:rgba(255,255,255,.25)}
 body.light-bg #nav .dot{background:rgba(var(--ink-rgb),.25)}
 body.light-bg #nav .dot.active{background:rgba(var(--ink-rgb),.9)}
-#hint{position:fixed;bottom:3vh;right:3vw;z-index:30;display:flex;align-items:center;gap:.65em;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.4;mix-blend-mode:difference;color:#aaa}
-#hint button{all:unset;display:inline-flex;align-items:center;gap:.45em;cursor:pointer;color:inherit;white-space:nowrap}
-#hint button:hover,#hint button:focus-visible{opacity:1;text-decoration:underline;text-underline-offset:.35em}
-#hint .ppt-key{padding:.16em .38em;border:1px solid currentColor;border-radius:3px;letter-spacing:.08em}
-#hint .ppt-sep{opacity:.55}
-body.low-power #hint{opacity:.72;color:var(--paper);mix-blend-mode:normal}
-body.light-bg.low-power #hint{color:var(--ink)}
 
 /* ============================================================
    ============ LAYOUTS API · 面向 agent 的类（v2）============

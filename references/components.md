@@ -59,7 +59,7 @@
 | `.h1-zh` | 页面主标题 | Noto Serif SC 700, 4.6vw |
 | `.h2-zh` | 副标题 | Noto Serif SC 600, 3.2vw |
 | `.h3-zh` | 流水线步骤标题 | Noto Serif SC 500, 1.9vw |
-| `.lead` | 引导段（比 body 大） | Noto Serif SC 400, 1.9vw |
+| `.lead` | 引导段（比 body 大） | Noto Serif SC 400, 1.75vw |
 | `.body-zh` | **正文/描述（非衬线）** | Noto Sans SC 400, 1.22vw |
 | `.body-serif` | 正文（衬线） | Noto Serif SC 400, 1.3vw |
 | `.kicker` | 小节提示（标题上方） | IBM Plex Mono, 12px uppercase |
@@ -387,7 +387,7 @@
 
 ### 驱动方式
 
-动效引擎在 `src/composables/useDeckMotion.js` + `recipesMagazine.js`:App.vue 翻页时调用 `playSlide(i, slideEl)`,recipe 按 `data-animate` 分发。低功耗模式（`B` 键）下改走 `revealStatic`,所有 `data-anim` 元素强制可见。你只需要在 HTML 里加标记,不用改任何 JS。
+动效引擎在 `src/composables/useDeckMotion.js` + `recipesMagazine.js`:App.vue 翻页时调用 `playSlide(i, slideEl)`,recipe 按 `data-animate` 分发。低功耗模式（系统 prefers-reduced-motion 自动启用）下改走 `revealStatic`,所有 `data-anim` 元素强制可见。你只需要在 HTML 里加标记,不用改任何 JS。
 
 ### 数据属性驱动
 
@@ -408,7 +408,7 @@
 
 | recipe | 触发方式 | 行为 | 代表布局 |
 |---|---|---|---|
-| `cascade`(默认) | 不加 `data-animate` 即为此值 | 所有 `data-anim` 逐个 stagger 淡入,75ms/step | Layout 3 / 4 / 5 / 10 |
+| `cascade`(默认) | 不加 `data-animate` 即为此值 | 所有 `data-anim` 逐个 stagger 淡入,100ms/step | Layout 3 / 4 / 5 / 10 |
 | `hero` | `.hero` slide 自动用此值 | 慢节奏 stagger,仪式感更强,160ms/step | Layout 1 / 2 / 7 |
 | `quote` | `data-animate="quote"` | 其他元素先出,`data-anim="line"` 的行 550ms 间隔逐句揭示 | Layout 8 |
 | `directional` | `data-animate="directional"` | `data-anim="left"` 从左滑入 → divider → `data-anim="right"` 从右滑入 | Layout 9 |

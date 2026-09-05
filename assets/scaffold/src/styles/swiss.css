@@ -1,27 +1,27 @@
 /* =====================================================================
    风格 B · 瑞士国际主义（swiss）
    移植自 guizang-ppt-skill template-swiss.html，改为 npm 自托管字体。
-   主题色切换：见 references/themes-swiss.md，只替换下方 :root 的"主题色"段。
+   主题色切换：node <skill目录>/scripts/themes/gen.mjs --apply <slug> --deck <deck目录>（本文件主题段由 gen 生成，勿手改）。
    ===================================================================== */
 @import '@fontsource-variable/inter';
 @import '@fontsource-variable/noto-sans-sc';
 @import '@fontsource-variable/jetbrains-mono';
 
 :root{
-  /* ============ 主题色(默认: 🔵 克莱因蓝 IKB) ============
-     切换主题: 从 references/themes-swiss.md 复制对应的值
-     整体替换标有"主题色"注释的所有变量,其他散落的 var() 引用无需逐处改 */
-  --paper:#fafaf8;          /* 主底色: 高级灰白 */
+/* THEME:BEGIN sw-ikb */
+  --paper:#fafaf8;
   --paper-rgb:250,250,248;
-  --ink:#0a0a0a;            /* 文字主色: 近黑 */
+  --ink:#0a0a0a;
   --ink-rgb:10,10,10;
-  --grey-1:#f0f0ee;         /* 浅灰底 */
-  --grey-2:#d4d4d2;         /* 中灰(分割线) */
-  --grey-3:#737373;         /* 暗灰(辅助文字) */
-  --accent:#002FA7;         /* 高亮色: 克莱因蓝 IKB */
+  --grey-1:#f0f0ee;
+  --grey-2:#d4d4d2;
+  --grey-3:#737373;
+  --accent:#002FA7;
   --accent-rgb:0,47,167;
-  --accent-on:#ffffff;      /* accent 上的反色文字 */
-  --accent-bright:#5B7BFF;  /* 暗底高亮: IKB 提亮版 */
+  --accent-on:#ffffff;
+  --accent-bright:#5B7BFF;
+/* THEME:END */
+  /* ============ 主题色(默认: 🔵 克莱因蓝 IKB,由 gen.mjs 从 themes.csv 生成) ============ */
 
   /* ============ Carbon 文本角色 token (role-based,代替 opacity) ============ */
   --text-primary:#0a0a0a;        /* = ink, 100% */
@@ -545,14 +545,6 @@ figure.tile > .frame-img{flex:0 0 auto}
 body.dark-bg #nav .dot{background:rgba(255,255,255,.32)}
 body.dark-bg #nav .dot.active{background:var(--accent)}
 
-#hint{position:fixed;bottom:2.4vh;right:2.5vw;z-index:30;display:flex;align-items:center;gap:.65em;font-family:var(--mono);font-size:14px;letter-spacing:.14em;text-transform:uppercase;opacity:.4}
-#hint button{all:unset;display:inline-flex;align-items:center;gap:.42em;cursor:pointer;color:inherit;white-space:nowrap}
-#hint button:hover,#hint button:focus-visible{opacity:1;text-decoration:underline;text-underline-offset:.3em}
-#hint .ppt-key{padding:.12em .34em;border:1px solid currentColor;letter-spacing:.06em}
-#hint .ppt-sep{opacity:.55}
-body.dark-bg #hint{color:var(--paper);opacity:.4}
-body.low-power #hint{color:var(--accent);opacity:.72}
-body.dark-bg.low-power #hint{color:var(--paper);opacity:.72}
 
 /* ESC 索引页: 动画元素强制可见 (覆盖 motion-ready 的 opacity:0) */
 #overview [data-anim]{opacity:1!important;transform:none!important}

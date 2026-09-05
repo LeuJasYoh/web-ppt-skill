@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ===== Web PPT 一键构建（Linux / macOS）=====
+# ===== VuePPT 一键构建（Linux / macOS）=====
 set -e
 [ -d node_modules ] || npm install
 npm run build

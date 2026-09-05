@@ -1,16 +1,14 @@
 # 瑞士国际主义风格 · 主题色预设（Swiss Themes）
 
-4 套基于瑞士国际主义风格（Swiss Style）的高反差配色。**每套都遵循"高级灰白底 + 单一高饱和高亮色"的极简原则**——这是瑞士风的灵魂,不允许混搭多个高亮色。
+5 套基于瑞士国际主义风格（Swiss Style）的高反差配色（登记表 `scripts/themes/themes.csv` 的 sw-* 行）。色值唯一事实源在 `scripts/themes/themes.csv`;本页保留调性与适用判断说明。**每套都遵循"高级灰白底 + 单一高饱和高亮色"的极简原则**——这是瑞士风的灵魂,不允许混搭多个高亮色。
 
 ---
 
-## 使用方法
+## 使用方法（gen 工作流，勿手改 CSS）
 
-1. 问用户选哪套（或基于内容推荐一套）
-2. 打开 `src/styles/swiss.css`
-3. 找到开头的 `:root{` 块
-4. **整体替换**标有"主题色"注释的所有变量：`--paper` / `--paper-rgb` / `--ink` / `--ink-rgb` / `--grey-1` / `--grey-2` / `--grey-3` / `--accent` / `--accent-rgb` / `--accent-on`
-5. 其他 CSS 都走 `var(--...)`,无需任何其他改动
+1. 问用户选哪套（或基于内容推荐一套）,完整清单以 `gen.mjs --list` 为准
+2. 应用：`node <skill目录>/scripts/themes/gen.mjs --apply <slug> --deck <deck目录>`——只回写 THEME 标记段（含 `--accent-bright`）,其他 CSS 都走 `var(--...)`
+3. 手改标记段会被 `validate.mjs --deck` 判不同步;要加新主题 = themes.csv 加一行 → validate 通过 → --apply
 
 ---
 
@@ -114,6 +112,27 @@
 
 ---
 
+## 🔵 信任蓝 (Trust Blue)
+
+**适合**:商业汇报、融资路演、技术分享。
+**调性**:信任蓝主锚点 + 珊瑚橙对比,现代软件官网的 SaaS 质感。**注意:本套自带灰阶,不是经典四套灰阶。**
+
+```css
+--paper:#F8FAFC;
+--paper-rgb:248,250,252;
+--ink:#1E293B;
+--ink-rgb:30,41,59;
+--grey-1:#EEF2F7;
+--grey-2:#E2E8F0;
+--grey-3:#64748B;
+--accent:#2563EB;
+--accent-rgb:37,99,235;
+--accent-on:#ffffff;
+--accent-bright:#7CA1F3;
+```
+
+---
+
 ## 推荐选择参考
 
 | 如果是... | 推荐主题 |
@@ -128,7 +147,7 @@
 ## 切换原则
 
 - **一份 deck 只用一套主题**,不要中途换 accent 色
-- 灰阶变量（`--grey-1/2/3`）在 4 套主题里完全相同,无需调整
+- 经典四套（IKB/柠檬黄/柠檬绿/安全橙）灰阶完全相同;`sw-saas 信任蓝` 是例外——自带 SaaS 灰阶（#EEF2F7/#E2E8F0/#64748B）,套用时勿沿用"灰阶不动"的惯性
 - WebGL 网格背景会自动读取 `--accent` 变量,翻页时鼠标附近会偷渡一抹高亮色(瑞士风默认 canvas-mode 关闭 WebGL;需要此效果时改 `src/style.js` 里 swiss 的 `canvasMode:false`)
 - 选定主题后,可以在 chrome 文案里用一个相关词强化语义（如 IKB 配 `International / Helvetica` ,柠檬黄配 `Active / Living`）
 
@@ -137,7 +156,7 @@
 ## ❌ 不要做的事
 
 - ❌ **不允许混搭**（例如 IKB 蓝 + 柠檬黄同时出现作高亮）——彻底违反瑞士风"单一锚点色"原则
-- ❌ **不允许用户自定义任意 hex 值**——委婉拒绝,展示 4 套预设让选
+- ❌ **不允许用户自定义任意 hex 值**——委婉拒绝,展示登记表预设让选（gen.mjs --list）
 - ❌ **不要改灰阶变量**——`--paper` / `--grey-1/2/3` / `--ink` 跨主题统一,只换 accent
 - ❌ **不要用渐变**——瑞士风拒绝任何渐变,所有色块必须纯色
 - ❌ **不要给 accent 加阴影 / 圆角 / 透明度**——直角、纯色、不透明,这是瑞士风的硬规则

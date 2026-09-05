@@ -3,7 +3,7 @@
    每个骨架的完整代码见 references/layouts-swiss.md（S01-S22）。
 2. 图片放 public/images/（命名 {页号}-{语义}.{ext}），骨架里 src="images/01-cover.jpg" 原样可用。
 3. 每页组件在 src/slides/index.js 按顺序注册。
-4. 本 skill 未移植演讲者模式与校验脚本，自检一律用下文 grep + 浏览器目测。
+4. 演讲者模式未移植；版式锁已由 scripts/verify/check-deck.mjs 机检，自检一律用下文 grep + 浏览器目测。
 -->
 
 # Swiss Layout Lock
@@ -20,6 +20,7 @@
 
 1. 每个正文页都必须先选一个登记版式,并在 `<section>` 上写 `data-layout="Sxx"`。
 2. 不允许临时发明 `S23/S24` 这类未出现在原始 22P 的正文结构。需要图片时,优先使用 `S22 Image Hero`;多图时使用 `S15/S16` 的原始网格骨架做图片格改造,不要发明新的证据墙。本 skill **没有**地图组件——地点/路线内容用 S08 文字对照或 S11 时间线承载,不要引入 MapLibre 等新依赖。
+2.5. swiss.css 里存在少数未在本文登记的辅助类（.bar-chart 家族 / .kpi-hero 系 / .dots 系等）——以 swiss.css 为准可用，但正文版式仍只认 S01-S22。`.sub-card` 自带 3px 微圆角，是"禁止圆角"硬规则的登记例外。
 3. 顶部中文标题默认左对齐并贴近左上内容轴。除原始 `S03/S09/S10` 这种 statement/split 版式外,不要把大标题放到页面水平中心。
 4. SVG 只能负责几何线条、圆、箭头、路径。除 S14/S17 的环心/圆心 1-2 个极短居中大字外,不要在 SVG 里写可见文字;所有文字标签用 HTML 放在网格、卡片或 caption 里。
 5. 图片槽位和图片生成比例必须绑定。先确定版式和槽位,再生成图片。

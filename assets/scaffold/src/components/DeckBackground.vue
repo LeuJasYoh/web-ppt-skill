@@ -2,10 +2,10 @@
 // WebGL 背景（移植自 guizang 模板，按风格切换）：
 //   magazine = 双画布：暗页全息色散（钛金暗流）/ 亮页旋转涡流（银色珍珠），light-bg 切换
 //   swiss    = 单画布：极细移动网格 + 鼠标点阵微扰 + accent 偷渡（canvas-mode 下不渲染）
-// 低功耗模式（B 键）自动停止 RAF 并隐藏画布。
+// 低功耗模式（系统 prefers-reduced-motion 自动启用）停止 RAF 并隐藏画布。
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { STYLE, styleConfig, deckThemeDark } from '../style'
-import { lowPower, LOW_POWER_EVENT } from '../composables/useLowPower'
+import { lowPower } from '../composables/useLowPower'
 
 const darkEl = ref(null)
 const lightEl = ref(null)
@@ -207,20 +207,16 @@ function stop() {
   raf = 0
 }
 
-function onLowPowerChange(e) { e.detail.on ? stop() : start() }
-
 // 瑞士风 canvas-mode（默认）：无 WebGL，直接不渲染画布
 const renderGrid = STYLE === 'swiss' && !styleConfig.canvasMode
 
 onMounted(() => {
   if (STYLE === 'swiss' && styleConfig.canvasMode) return
   addEventListener('mousemove', onMouseMove)
-  addEventListener(LOW_POWER_EVENT, onLowPowerChange)
   start()
 })
 onBeforeUnmount(() => {
   removeEventListener('mousemove', onMouseMove)
-  removeEventListener(LOW_POWER_EVENT, onLowPowerChange)
   stop()
 })
 </script>

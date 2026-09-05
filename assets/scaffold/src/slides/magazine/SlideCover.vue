@@ -2,7 +2,7 @@
   <!-- 封面 · hero dark：WebGL 色散背景透出，hero recipe 慢节奏进场 -->
   <section class="slide hero dark">
     <div class="chrome">
-      <div class="left">Web PPT · Magazine</div>
+      <div class="left">VuePPT · Magazine</div>
       <div class="right">Act I · 01 / 04</div>
     </div>
 
