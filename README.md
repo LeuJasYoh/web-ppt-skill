@@ -1,79 +1,88 @@
 # VuePPT
 
-一个 Agent Skill（ZCode / Claude Code 等）：制作现代、带精美动效的**网页版 PPT（Web PPT）**，交付**单个离线可执行的 .exe**——拷到任意设备双击即演，无需任何运行时。
+一个做网页幻灯片的 Agent Skill。给它一份大纲，它产出两样东西：能在浏览器里翻页演示的页面，和一个拷到任何 Windows 机器双击就能跑的 exe。字体、动效、图标全部打包进二进制，断网也不影响效果。
 
-## 命名（已定死，全库统一，不再改）
+前端是 Vue 3 + Vite，所有页面常驻 DOM 做横向条带翻页，动效由 Motion One 驱动。后端是 Go `go:embed` 的静态服务器，七十来行、零依赖，负责随机端口和自动开浏览器。视觉系统移植自 guizang-ppt-skill 的两套风格，在这个基础上改成了组件化，补了主题生产线和交付前的机检工具。
 
-| 场景 | 名称 |
-|---|---|
-| 项目名 / 品牌 | **VuePPT** |
-| Skill 标识（SKILL.md frontmatter `name`） | `vue-ppt` |
-| npm 包名（`assets/scaffold/package.json`） | `vueppt` |
-| Go 模块名（`assets/scaffold/go.mod`） | `vueppt` |
+## 两种风格
 
-## 架构
+一份 deck 只能选一种。叙事、观点、人文类内容适合 A；数据、产品、汇报类适合 B。
 
-- **前端**：Vue 3 + Vite。所有页常驻 DOM 的横向条带翻页；动效由 [Motion One](https://motion.dev/) 驱动（npm 打包，离线全保真）；字体 @fontsource 自托管；图标 Lucide。
-- **后端**：Go `go:embed` 静态服务器（约 70 行、零依赖），把 `dist/` 编进二进制，随机端口 + 自动开浏览器。
-- **交付**：`npm run build` → `go build` → 一个 exe。支持 Windows / Linux / macOS 交叉编译。
-
-## 两种视觉风格（一份 deck 只能选一种）
-
-| | 风格 A · 电子杂志 | 风格 B · 瑞士国际主义 |
+| | A · 电子杂志 | B · 瑞士国际主义 |
 |---|---|---|
-| 气质 | Monocle 杂志感、叙事、人文 | Helvetica Forever、信息驱动、数据 |
+| 气质 | Monocle 杂志感 | Helvetica Forever |
 | 字体 | 衬线大标题 + 等宽元数据 | 全程无衬线，字号越大字重越轻 |
-| 背景 | WebGL 双背景（暗页色散 / 亮页涡流） | canvas 模式默认；可开极细网格 |
-| 主题色 | mag-* 7 套（墨水经典 / 靛蓝瓷 / 森林墨 / 牛皮纸 / 沙丘 / 象牙雪 / 鼠尾草） | sw-* 5 套锚点色（克莱因蓝 / 柠檬黄 / 柠檬绿 / 安全橙 / 信任蓝） |
-| 版式 | 10 种布局 | 22 种锁定版式 S01-S22（版式锁） |
-| 动效 | 5 种 recipe | 21 种语义 recipe（KPI 生长 / 时间线点亮 / 镜像对照…） |
+| 背景 | WebGL 双背景（暗页色散 / 亮页涡流） | canvas 直角卡片即页面，默认不开 WebGL |
+| 版式 | 10 种布局 | 22 种锁定版式 S01-S22 |
+| 动效 | 5 种语义 recipe | 21 种语义 recipe |
 
-主题色**只从预设中挑选，不接受自定义 hex**——色彩搭配错了画面瞬间变丑，预设保证了"电子杂志 × 电子墨水"与"瑞士国际主义"的美学不垮。
+## 主题
 
-## 仓库结构
+色值只有一处事实源：`scripts/themes/themes.csv`。目前 magazine 侧 7 套（墨水经典、靛蓝瓷、森林墨、牛皮纸、沙丘、象牙雪、鼠尾草），swiss 侧 5 套（克莱因蓝、柠檬黄、柠檬绿、安全橙、信任蓝）。
 
-```
-SKILL.md                  # 主控文档：工作流、硬规则、技术红线
-references/               # 参考文档（按需渐进阅读）
-  layouts.md              #   风格 A 的 10 个布局骨架
-  layouts-swiss.md        #   风格 B 的 22 个版式骨架 + 21 个动效 recipe 契约表
-  swiss-layout-lock.md    #   瑞士风版式锁（S01-S22 登记表）
-  themes.md/themes-swiss.md  # 主题配色语义参考（色值唯一事实源在 scripts/themes/themes.csv）
-  components.md           #   组件手册
-  checklist.md            #   交付前 P0-P3 自检清单
-  golang-server.md        #   构建交付与交叉编译
-assets/scaffold/          # Vue 3 + Vite + Go 脚手架（复制即用）
-scripts/themes/           # 主题生产线：themes.csv 唯一事实源 + gen/validate
-scripts/verify/           # 验收工具链：check-deck 结构验收 + capture 截图连拍/主题画廊
+换主题不改 CSS，跑脚本：
+
+```bash
+node <skill目录>/scripts/themes/gen.mjs --apply <slug> --deck <deck目录>
 ```
 
-> 文档中的布局骨架与类名已与脚手架的 `swiss.css` / `magazine.css` 及动效引擎 `recipesSwiss.js` / `recipesMagazine.js` 的 DOM 契约逐一校验对齐，照抄即可生效。
+不接受自定义 hex。配色这件事搭错一格画面就垮，预设的作用就是把这种自由发挥挡在门外。想加新主题，在 CSV 里加一行，`validate.mjs` 会查词表、槽位和对比度，过了才允许应用。
 
-## 安装
+## 怎么用
 
-把本仓库整目录复制（或 clone）到 Agent 的 skills 目录：
+把仓库 clone 到 agent 的 skills 目录（比如 `<项目>/.agents/skills/VuePPT/`），然后正常对话触发即可。用户提到网页 PPT、瑞士风 PPT、slide deck，或者想要"比 PowerPoint 动效更强的演示"、"离线单文件程序"时，agent 会走这个 skill。
+
+skill 目录本身是只读的工具箱，干活在另一个地方——工作区里新建的 deck 目录：
+
+```bash
+node <skill目录>/scripts/new-deck.mjs 我的演示 --install     # 建目录、复制脚手架、装依赖
+node <skill目录>/scripts/themes/gen.mjs --list               # 挑主题
+node <skill目录>/scripts/themes/gen.mjs --apply mag-ink --deck 我的演示
+```
+
+写页面在 deck 的 `src/slides/` 里进行。布局骨架照抄 `references/layouts.md`（A）或 `swiss-layout-lock.md` 加 `layouts-swiss.md`（B），不要发明模板外的类名。文案有单独一份硬规则清单 `references/copywriting.md`——翻案腔、空转冒号句、拟人喻体这类 AI 腔，在生成环节就被拦下，而不是上屏之后再改。
+
+交付前过一遍机检：
+
+```bash
+node <skill目录>/scripts/verify/check-deck.mjs 我的演示            # 版式锁、主题节奏、占位符
+node <skill目录>/scripts/verify/check-deck.mjs 我的演示 --render   # 加像素实测（需 playwright）
+node <skill目录>/scripts/verify/capture.mjs 我的演示               # 逐页截图，人眼过一遍
+node <skill目录>/scripts/themes/validate.mjs --deck 我的演示       # 主题表与 CSS 同步
+```
+
+check-deck 拦的东西：未登记的版式、连续三页同明暗、SVG 里写文字、占位符残留、白名单外的依赖。`--render` 量的东西：溢出（按 40/90/160px 给修复建议）、最小字号、标题间距、修过头留下的大片空白。
+
+最后出成品：
+
+```bash
+npm run build
+go build -ldflags "-s -w" -o 演示名称.exe .
+```
+
+## 演示时的操作
+
+`→` 或空格翻页，`←` 回退，`Home`/`End` 首末页，`ESC` 呼出总览宫格，地址栏加 `?slide=N` 直达第 N 页。页面里不放任何键位提示，观众看不到这些说明——需要时把本节发给他。
+
+系统开了"减少动态效果"（prefers-reduced-motion）时自动进入静态模式：动画停用，内容全显。
+
+## 目录
 
 ```
-# 工作区级
-<项目>/.agents/skills/VuePPT/
+SKILL.md                主控文档：需求访谈、工作流、硬规则、技术红线
+references/             布局骨架、组件手册、文案纪律、自检清单
+scripts/new-deck.mjs    在工作区创建 deck 目录
+scripts/themes/         主题生产线（CSV 事实源 + 生成 + 校验 + 词表）
+scripts/verify/         验收工具链（结构快门 + 截图连拍 + 主题画廊）
+assets/scaffold/        Vue 3 + Vite + Go 脚手架模板
 ```
 
-用户提到「网页PPT / Web PPT / 瑞士风 PPT / slide deck」等，或想要"比 PowerPoint 动效更强的演示"、"离线单文件演示程序"时自动触发。
+references 里的布局骨架和类名已与脚手架的 CSS、动效引擎逐一核对过，照抄即可生效。
 
-## 快速上手
+## 命名
 
-1. **需求澄清**：风格 A/B → 受众场合 → 页数 → 素材 → 主题色（预设里选）
-2. **建 deck 目录**：`node <skill目录>/scripts/new-deck.mjs <工作区/deck目录> --install`（复制纯源码脚手架 + 装依赖；skill 目录只读）
-3. **选风格**（改 4 处，见 `src/style.js` 顶部注释）：`STYLE`、`main.js` 样式导入、示例页导入、`index.html` 背景色
-4. **选主题色**：`node <skill目录>/scripts/themes/gen.mjs --list` 挑选 → `--apply <slug> --deck <deck目录>` 应用（清单见 `scripts/themes/README.md`）
-5. **写页面**：布局骨架照抄 references 文档，动效标记 `data-anim` / `data-animate`
-6. **构建交付**：`npm run build && go build` → 演示名称.exe
-7. **验证**：翻页 / 总览逐页过一遍（清单见 `references/checklist.md`）
-
-## 操作
-
-双击 exe 后：`→`/`空格` 翻页，`←` 回退，`Home/End` 首末页，`ESC` 总览宫格（点缩略图跳页）；URL 加 `?slide=N` 直达第 N 页。成品页面内不显示任何操作提示——本节即操作说明。系统开启"减少动态效果"（prefers-reduced-motion）时自动进入静态模式：动画停用、内容全显。
+三处标识是定死的：品牌叫 VuePPT，skill 注册名是 `vue-ppt`（SKILL.md frontmatter），npm 包和 Go 模块都叫 `vueppt`。改的时候三处一起动。
 
 ## 致谢
 
-视觉系统（双风格 CSS、版式语言、动效 recipe、主题色）移植自 [guizang-ppt-skill](https://github.com/Obnine/guizang-ppt-skill)，在其基础上改为 Vue 3 组件化 + Go 单文件交付，并将参考文档全部重写对齐到实际代码。
+视觉系统（双风格 CSS、版式语言、动效 recipe、主题色）来自 [guizang-ppt-skill](https://github.com/Obnine/guizang-ppt-skill)；主题词表与"生成→校验→截图→人眼验收"的闭环方法论来自 style-generate-skill；文案规则来自 lieflat-less-ai-tone 的 629 篇对照研究。各自都做了适配或重写，问题归本项目。
