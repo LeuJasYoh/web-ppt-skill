@@ -40,7 +40,7 @@ function requireDeck(deckArg) {
 export function readThemes() {
   const text = readFileSync(CSV_PATH, 'utf-8')
   const lines = text.split('\n').filter(l => l.trim() && !l.startsWith('#'))
-  const header = lines[0].split(',')
+  const header = lines[0].split(',').map(h => h.trim())  // CRLF 兼容：autocrlf 检出后表头尾缀 
   return lines.slice(1).map(line => {
     const cells = line.split(',')
     const row = {}
